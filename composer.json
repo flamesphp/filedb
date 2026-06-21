@@ -1,0 +1,12 @@
+{
+  "name": "flamesphp/filedb",
+  "description": "Flames: FileDB — sharded on-disk key-value store for DATABASE_MEMORY_FILEDB_*",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8.3",
+    "flamesphp/env": "^1.0"
+  }
+}

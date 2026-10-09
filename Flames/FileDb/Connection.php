@@ -10,17 +10,10 @@ use Flames\Env\Env;
 /**
  * @internal
  */
-final class Connection
+final readonly class Connection
 {
-    public readonly string $name;
-    public readonly string $driver;
-    public readonly string $path;
-
-    private function __construct(string $name, string $driver, string $path)
+    private function __construct(public string $name, public string $driver, public string $path)
     {
-        $this->name   = $name;
-        $this->driver = $driver;
-        $this->path   = $path;
     }
 
     public static function resolve(string $connection = 'default'): self

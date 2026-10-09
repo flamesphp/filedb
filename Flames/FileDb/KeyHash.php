@@ -7,13 +7,20 @@ namespace Flames\FileDb;
 /**
  * SHA1 key hashing and sharded path layout.
  *
- * Values:  v/{h0h1}/{h2h3}/{hash}
- * Groups:  g/{g0g1}/{g2g3}/{groupHash}/{h0h1}/{hash}
+ * Values:  &flames/v/{h0h1}/{h2h3}/{hash}
+ * Groups:  &flames/g/{g0g1}/{g2g3}/{groupHash}/{h0h1}/{hash}
  *
  * @internal
  */
 final class KeyHash
 {
+    public const string DATA_DIR = '&flames';
+
+    public static function dataRoot(string $root): string
+    {
+        return $root . DIRECTORY_SEPARATOR . self::DATA_DIR;
+    }
+
     public static function hash(string $storageKey): string
     {
         return sha1($storageKey);
@@ -21,10 +28,23 @@ final class KeyHash
 
     public static function valuePath(string $root, string $hash): string
     {
-        return $root . DIRECTORY_SEPARATOR . 'v'
+        return self::dataRoot($root) . DIRECTORY_SEPARATOR . 'v'
             . DIRECTORY_SEPARATOR . substr($hash, 0, 2)
             . DIRECTORY_SEPARATOR . substr($hash, 2, 2)
             . DIRECTORY_SEPARATOR . $hash;
+    }
+
+    public static function valueRoot(string $root): string
+    {
+        return self::dataRoot($root) . DIRECTORY_SEPARATOR . 'v';
+    }
+
+    public static function groupRoot(string $root, string $groupHash): string
+    {
+        return self::dataRoot($root) . DIRECTORY_SEPARATOR . 'g'
+            . DIRECTORY_SEPARATOR . substr($groupHash, 0, 2)
+            . DIRECTORY_SEPARATOR . substr($groupHash, 2, 2)
+            . DIRECTORY_SEPARATOR . $groupHash;
     }
 
     public static function isHashFilename(string $name): bool
@@ -34,10 +54,7 @@ final class KeyHash
 
     public static function refPath(string $root, string $groupHash, string $keyHash): string
     {
-        return $root . DIRECTORY_SEPARATOR . 'g'
-            . DIRECTORY_SEPARATOR . substr($groupHash, 0, 2)
-            . DIRECTORY_SEPARATOR . substr($groupHash, 2, 2)
-            . DIRECTORY_SEPARATOR . $groupHash
+        return self::groupRoot($root, $groupHash)
             . DIRECTORY_SEPARATOR . substr($keyHash, 0, 2)
             . DIRECTORY_SEPARATOR . $keyHash;
     }

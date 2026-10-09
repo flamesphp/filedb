@@ -9,8 +9,8 @@ namespace Flames\FileDb;
  */
 final class Serializer
 {
-    private const IGBINARY_PREFIX = "\x00\x00\x00\x01";
-    private const PHP_PREFIX      = "\x00\x00\x00\x02";
+    private const string IGBINARY_PREFIX = "\x00\x00\x00\x01";
+    private const string PHP_PREFIX      = "\x00\x00\x00\x02";
 
     public static function encode(mixed $value): string
     {

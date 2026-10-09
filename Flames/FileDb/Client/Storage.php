@@ -15,7 +15,7 @@ use Flames\FileDb\Serializer;
  */
 final class Storage
 {
-    private const BATCH = 500;
+    private const int BATCH = 500;
 
     /** @var 'pipeline'|null */
     private ?string $mode = null;
@@ -200,7 +200,7 @@ final class Storage
         $hash    = KeyHash::hash($storageKey);
         $path    = KeyHash::valuePath($this->connection->path, $hash);
         $payload = Serializer::encode($value);
-        $expires = $expires ?? 0;
+        $expires ??= 0;
         $keyLen  = strlen($storageKey);
 
         $blob = pack('Nn', $expires, $keyLen)
@@ -272,10 +272,7 @@ final class Storage
     private function deleteByPrefix(string $prefix, string $pattern): int
     {
         $groupHash = KeyHash::hash($prefix);
-        $groupRoot = $this->connection->path . DIRECTORY_SEPARATOR . 'g'
-            . DIRECTORY_SEPARATOR . substr($groupHash, 0, 2)
-            . DIRECTORY_SEPARATOR . substr($groupHash, 2, 2)
-            . DIRECTORY_SEPARATOR . $groupHash;
+        $groupRoot = KeyHash::groupRoot($this->connection->path, $groupHash);
 
         if (!is_dir($groupRoot)) {
             return 0;
@@ -332,7 +329,7 @@ final class Storage
 
     private function deleteByGlobScan(string $pattern): int
     {
-        $valueRoot = $this->connection->path . DIRECTORY_SEPARATOR . 'v';
+        $valueRoot = KeyHash::valueRoot($this->connection->path);
         if (!is_dir($valueRoot)) {
             return 0;
         }

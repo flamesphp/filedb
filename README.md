@@ -8,8 +8,9 @@ Designed for large key counts without a central JSON index.
 
 ```
 {PATH}/
-  v/{aa}/{bb}/{sha1(key)}              # values (binary header + payload)
-  g/{aa}/{bb}/{sha1(prefix)}/{hh}/{sha1(key)}   # prefix groups for users.*
+  &flames/
+    v/{aa}/{bb}/{sha1(key)}
+    g/{aa}/{bb}/{sha1(prefix)}/{hh}/{sha1(key)}
 ```
 
 - Filenames are SHA1 hashes only — no extensions.

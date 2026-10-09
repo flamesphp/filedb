@@ -9,7 +9,7 @@ use Flames\FileDb\Client\Storage;
 /**
  * On-disk memory engine backed by sharded SHA1 files.
  */
-final class FileDb
+final readonly class FileDb
 {
     private Storage $storage;
 
